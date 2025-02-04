@@ -15,26 +15,50 @@ const CARD_WIDTH = width * 0.4; // Increased card width
 const CARD_HEIGHT = height * 0.3; // Increased card height
 const VISIBLE_CARDS = 20; // More cards for the arc
 
+// Placeholder tarot card data
+const tarotCards = [
+    { id: '1', name: 'The Fool' },
+    { id: '2', name: 'The Magician' },
+    { id: '3', name: 'The High Priestess' },
+    { id: '4', name: 'The Empress' },
+    { id: '5', name: 'The Emperor' },
+    { id: '6', name: 'The Hierophant' },
+    { id: '7', name: 'The Lovers' },
+    { id: '8', name: 'The Chariot' },
+    { id: '9', name: 'Strength' },
+    { id: '10', name: 'The Hermit' },
+    { id: '11', name: 'Wheel of Fortune' },
+    { id: '12', name: 'Justice' },
+    { id: '13', name: 'The Hanged Man' },
+    { id: '14', name: 'Death' },
+    { id: '15', name: 'Temperance' },
+    { id: '16', name: 'The Devil' },
+    { id: '17', name: 'The Tower' },
+    { id: '18', name: 'The Star' },
+    { id: '19', name: 'The Moon' },
+    { id: '20', name: 'The Sun' },
+  ];
+  
+
 const TarotDeckScreen = ({ navigation }) => {
   const [selectedCard, setSelectedCard] = useState(null);
 
-  // Generate positions for cards in a semicircle
-  const cards = Array.from({ length: VISIBLE_CARDS }, (_, index) => {
-    // Calculate angle for semicircle arrangement (180 degrees)
-    const angle = (Math.PI / 2) * (index / (VISIBLE_CARDS - 3)) - Math.PI / 1.5;
-    const radius = height * 0.3; // Adjusted radius
+  // Generate positions for cards in a semicircle, now using tarotCards array
+  const cards = tarotCards.map((tarotCard, index) => {
+    const angle = (Math.PI / 2) * (index / (tarotCards.length - 3)) - Math.PI / 1.5;
+    const radius = height * 0.3;
     
     return {
-      id: index,
-      // Rotate cards to face outward
-      rotation: ((index / (VISIBLE_CARDS - 1)) * 90 - 45),
-      // Position cards in a semicircle
+      ...tarotCard, // Spread the tarot card data (id and name)
+      rotation: ((index / (tarotCards.length - 1)) * 90 - 45),
       x: radius * Math.cos(angle),
-      y: radius * Math.sin(angle) + height * 0.2, // Moved cards up
+      y: radius * Math.sin(angle) + height * 0.2,
     };
   });
 
   const renderCard = (card, index) => {
+    const isSelected = selectedCard?.id === card.id;
+
     return (
       <Animated.View
         key={card.id}
@@ -46,20 +70,29 @@ const TarotDeckScreen = ({ navigation }) => {
               { translateY: card.y },
               { rotate: `${card.rotation}deg` },
             ],
-            // Add overlapping effect
-            zIndex: VISIBLE_CARDS - index,
+            zIndex: tarotCards.length - index,
           },
         ]}
       >
         <TouchableOpacity
           onPress={() => {
-            setSelectedCard(card.id);
-            navigation.navigate('NextScreen', { selectedCard: card.id });
+            setSelectedCard(card);
+            navigation.navigate('NextScreen', { 
+              selectedCard: card,
+              cardName: card.name 
+            });
           }}
         >
           <View style={styles.cardInner}>
-            {/* Add decorative pattern */}
-            <View style={styles.cardPattern} />
+            <View style={[
+              styles.cardPattern,
+              isSelected && styles.selectedCard
+            ]} />
+            {isSelected && (
+              <View style={styles.cardNameContainer}>
+                <Text style={styles.cardName}>{card.name}</Text>
+              </View>
+            )}
           </View>
         </TouchableOpacity>
       </Animated.View>
@@ -78,6 +111,12 @@ const TarotDeckScreen = ({ navigation }) => {
         <View style={styles.deckContainer}>
           {cards.map((card, index) => renderCard(card, index))}
         </View>
+
+        {selectedCard && (
+          <Text style={styles.selectedCardText}>
+            Selected: {selectedCard.name}
+          </Text>
+        )}
 
         <TouchableOpacity
           style={styles.beginButton}
@@ -159,6 +198,33 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: '600',
+  },
+  selectedCard: {
+    borderColor: '#FFD700', // Bright gold for selected card
+    borderWidth: 6,
+    opacity: 0.8,
+  },
+  cardNameContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding: 8,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  cardName: {
+    color: 'white',
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+  selectedCardText: {
+    color: 'white',
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 20,
   },
 });
 
