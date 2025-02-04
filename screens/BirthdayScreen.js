@@ -146,7 +146,10 @@ const BirthdayScreen = ({ navigation }) => {
 
           <TouchableOpacity 
             style={styles.continueButton}
-            onPress={() => navigation.navigate('NextScreen')}
+            onPress={() => {
+              console.log('Navigating to TarotDeck');
+              navigation.navigate('TarotDeck');
+            }}
           >
             <Text style={styles.continueButtonText}>→</Text>
           </TouchableOpacity>

@@ -6,10 +6,11 @@ import LoginScreen from './screens/LoginScreen';
 import NicknameScreen from './screens/NicknameScreen';
 import GenderScreen from './screens/GenderScreen';
 import BirthdayScreen from './screens/BirthdayScreen';
+import TarotDeckScreen from './screens/TarotDeckScreen';
 
 const Stack = createStackNavigator();
 
-const firstScreen = ({ navigation }) => {
+const FirstScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Start Your Tarot Journey</Text>
@@ -37,11 +38,12 @@ function App() {
           cardStyle: { backgroundColor: 'black' }
         }}
       >
-        <Stack.Screen name="Home" component={firstScreen} />
+        <Stack.Screen name="Home" component={FirstScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Nickname" component={NicknameScreen} />
         <Stack.Screen name="Gender" component={GenderScreen} />
         <Stack.Screen name="Birthday" component={BirthdayScreen} />
+        <Stack.Screen name="TarotDeck" component={TarotDeckScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
