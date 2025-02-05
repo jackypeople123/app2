@@ -120,10 +120,11 @@ const TarotDeckScreen = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.beginButton}
-          onPress={() => navigation.navigate('NextScreen')}
+          onPress={() => navigation.navigate('Chat')}
         >
           <Text style={styles.beginButtonText}>Begin Tarot Journey</Text>
         </TouchableOpacity>
+      
       </View>
     </SafeAreaView>
   );
@@ -225,6 +226,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
     marginBottom: 20,
+  },
+  chatButton: {
+    backgroundColor: '#f4511e',
+    marginBottom: 20,
+    marginTop: 10,
   },
 });
 

@@ -7,6 +7,7 @@ import NicknameScreen from './screens/NicknameScreen';
 import GenderScreen from './screens/GenderScreen';
 import BirthdayScreen from './screens/BirthdayScreen';
 import TarotDeckScreen from './screens/TarotDeckScreen';
+import ChatScreen from './screens/ChatScreen';
 
 const Stack = createStackNavigator();
 
@@ -17,14 +18,18 @@ const FirstScreen = ({ navigation }) => {
       <Text style={styles.description}>
         Log in to unlock all features. To better understand you and provide personalized Tarot guidance, we'll ask you a few questions. Then, choose your favorite Tarot deck and embark on your spiritual journey.
       </Text>
-      <Button 
-      title="Login" 
-      color="#6495ED" 
-      onPress={() => {
-        console.log("Button pressed!");
-        navigation.navigate('Login');
-      }}
-      />
+      <View style={styles.buttonContainer}>
+        <Button 
+          title="Login" 
+          color="#6495ED" 
+          onPress={() => navigation.navigate('Login')}
+        />
+        <Button 
+          title="測試聊天" 
+          color="#f4511e" 
+          onPress={() => navigation.navigate('Chat')}
+        />
+      </View>
     </View>
   );
 };
@@ -33,6 +38,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator 
+        initialRouteName="Home"
         screenOptions={{
           headerShown: false,
           cardStyle: { backgroundColor: 'black' }
@@ -44,6 +50,18 @@ function App() {
         <Stack.Screen name="Gender" component={GenderScreen} />
         <Stack.Screen name="Birthday" component={BirthdayScreen} />
         <Stack.Screen name="TarotDeck" component={TarotDeckScreen} />
+        <Stack.Screen 
+          name="Chat" 
+          component={ChatScreen}
+          options={{
+            title: '塔羅對話',
+            headerStyle: {
+              backgroundColor: '#1C1C1E',
+            },
+            headerTintColor: '#fff',
+            headerShown: true,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -67,6 +85,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     marginBottom: 40,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '80%',
   },
 });
 
